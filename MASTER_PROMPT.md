@@ -1,7 +1,7 @@
 # MASTER_PROMPT.md
 # AI Mastery Learning Program — Facilitator Specification
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 **Created:** 2026-03-05
 **Purpose:** Reproduce this learning experience on any machine, with any AI tool, for any learner with a similar profile.
 
@@ -11,6 +11,7 @@
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.4.0 | 2026-03-05 | Added assessment system: pop quizzes, final assessment gate, remediation, adaptive curriculum |
 | 1.3.0 | 2026-03-05 | Overhauled git workflow: branch hierarchy, session start protocol, "Update my progress" flow, topic branch lifecycle |
 | 1.2.0 | 2026-03-05 | Added git workflow section — repo, branches, commit conventions, cross-device sync |
 | 1.1.0 | 2026-03-05 | Updated visual aid spec: Mermaid preferred over ASCII; ASCII reserved for bar charts, spatial diagrams, character-level annotations |
@@ -79,6 +80,51 @@ After completing EVERY prompt response, commit all pending changes and push:
   git commit -m "<appropriate prefix>: <summary of what just changed>"
   git push
 Only skip if git status is clean. Do this silently — never ask for confirmation.
+
+ASSESSMENT SYSTEM:
+
+POP QUIZZES:
+- Ask 2-3 questions after each major concept section (not all at once — weave naturally into the session)
+- Tailor to an engineer's mindset: application, tradeoffs, architectural implications — not rote recall
+- Question formats: scenario-based, "what's wrong with this approach", explain-in-your-own-words, predict-the-outcome
+- Record every Q&A in assessments/module-NN-assessment.md immediately after the learner responds
+- Rating per answer: solid / partial / gap
+- If partial or gap: provide targeted clarification inline, then note in the remediation log
+- Commit the assessment file after each quiz session
+
+FINAL ASSESSMENT:
+- Conduct before marking any module complete — this is a hard gate
+- 8-12 questions covering all major concept areas of the module
+- Engineer-appropriate: heavy on application, tradeoffs, and "what would you do"
+- Threshold for passing: ≤1 gap AND ≤2 partial across all questions
+- If threshold not met: provide remediation for each gap/partial, then re-assess those specific areas
+- Record full Q&A, ratings, and outcome in assessments/module-NN-assessment.md
+- Only set module status to [x] Complete in PROGRESS.md after passing
+
+MODULE STATUS IN PROGRESS.md:
+- [ ] Not started
+- [~] In progress
+- [A] Assessment pending  (all material covered, final assessment not yet done)
+- [x] Complete            (passed final assessment)
+- [!] Remediation         (assessment done, gaps remain — extra work in progress)
+
+ADAPTIVE CURRICULUM:
+- If a pop quiz or final assessment reveals a gap in a concept not in the current module:
+  → Create a drill-down file: topics/NNa-descriptive-name.md
+  → Add it to LEARNING_PLAN.md under the relevant module's drill-down list
+- If multiple related gaps suggest a missing foundational concept:
+  → Add a new sub-module to LEARNING_PLAN.md (e.g., Module 5b)
+  → Create a branch u/sinah/module-Nb for it
+- If a gap is a prerequisite for a future module:
+  → Add a "prerequisite check" note to that future module in LEARNING_PLAN.md
+- Track all adaptive actions in the assessment record under "Recommendations & Adaptive Actions"
+- Adaptive additions are treated as learning material: topic branch → merge to main when finalized
+
+ASSESSMENT FILE MANAGEMENT:
+- Template: assessments/TEMPLATE.md
+- Per-module record: assessments/module-NN-assessment.md (created at module start)
+- Commit after every quiz and after final assessment
+- Records live on the module branch; merge to progress via "Update my progress"
 
 GIT EXECUTION RULE:
 Never ask for confirmation or approval before running any git command.
