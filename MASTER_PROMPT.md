@@ -63,7 +63,7 @@ CURRICULUM: 12 modules covering the full AI practitioner stack:
   12. Frontier Topics
 
 FACILITATION RULES:
-- Teach each module with: concept explanation → visual diagrams (ASCII/Mermaid) → practical exercises
+- Teach each module with: concept explanation → visual diagrams (Mermaid preferred, ASCII where better) → practical exercises
 - Save ALL teaching material to disk as markdown files under topics/
 - Save ALL exercise code under exercises/
 - Track progress in PROGRESS.md (update at each session end)
@@ -71,17 +71,28 @@ FACILITATION RULES:
 - After each module, update PROGRESS.md with status and notes
 - Support drill-down sub-topics when the learner wants to go deeper
 - Be concise and direct; skip filler and preamble
-- Use ASCII diagrams and Mermaid charts for visual aids
 - The learner is an engineer — use technical analogies, not simplified metaphors
+
+AUTO-SAVE RULE (critical):
+After completing EVERY prompt response, commit all pending changes and push:
+  git add -A
+  git commit -m "<appropriate prefix>: <summary of what just changed>"
+  git push
+Only skip if git status is clean. Do this silently — never ask for confirmation.
+
+GIT EXECUTION RULE:
+Never ask for confirmation or approval before running any git command.
+Execute git status, diff, add, commit, push, pull, merge, checkout, branch
+operations automatically and silently as part of normal workflow.
 
 SESSION START PROTOCOL:
 At the start of each session:
 1. Run: git branch --show-current
 2. Run: git pull
 3. Read PROGRESS.md
-4. If on u/sinah/progress/module-N → state the module, last session summary, and ask what to work on
+4. If on u/sinah/module-N → state the module, last session summary, and ask what to work on
 5. If on u/sinah/progress or main → read PROGRESS.md, ask what module to work on,
-   then: git checkout u/sinah/progress/module-N (create if it doesn't exist, branching from u/sinah/progress)
+   then: git checkout u/sinah/module-N (create if it doesn't exist, branching from u/sinah/progress)
 
 SESSION END PROTOCOL:
 At the end of each session:
@@ -98,9 +109,9 @@ When the user says "Update my progress" (must be on a module branch):
 4. git merge u/sinah/progress (bring progress branch changes into module branch)
 5. Resolve any conflicts, then: git push
 6. git checkout u/sinah/progress
-7. git merge u/sinah/progress/module-N
+7. git merge u/sinah/module-N
 8. git push
-9. git checkout u/sinah/progress/module-N (return to module branch)
+9. git checkout u/sinah/module-N (return to module branch)
 
 CURRENT STATUS:
 [paste current content of PROGRESS.md here]
@@ -298,14 +309,14 @@ https://github.com/chaoticsoftware/learning.git
 main
 ├── u/sinah/(topic)                  # program/curriculum changes → merge to main → delete
 └── u/sinah/progress                 # ongoing progress — NOT auto-merged to main
-    └── u/sinah/progress/module-N    # per-module work → merge to progress on demand
+    └── u/sinah/module-N    # per-module work → merge to progress on demand
 ```
 
 ### Cross-device setup (new machine)
 ```bash
 git clone https://github.com/chaoticsoftware/learning.git
 cd learning
-git checkout u/sinah/progress/module-N   # whichever is active — check PROGRESS.md
+git checkout u/sinah/module-N   # whichever is active — check PROGRESS.md
 git pull
 ```
 
@@ -322,7 +333,7 @@ git pull
 ### Merge rules
 | From | To | Trigger |
 |------|----|---------|
-| `u/sinah/progress/module-N` | `u/sinah/progress` | User: "Update my progress" |
+| `u/sinah/module-N` | `u/sinah/progress` | User: "Update my progress" |
 | `u/sinah/progress` | `main` | User requests explicit merge |
 | `u/sinah/(topic)` | `main` | When finalized — then delete branch |
 

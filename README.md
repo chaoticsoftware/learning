@@ -43,9 +43,9 @@ Claude reads the current branch and `PROGRESS.md` and picks up where you left of
 
 ```
 main
-├── u/sinah/(topic)           # program/curriculum changes → merged to main → deleted
-└── u/sinah/progress          # ongoing learning progress — NOT auto-merged to main
-    └── u/sinah/progress/module-N   # per-module work → merged to progress on demand
+├── u/sinah/(topic)      # program/curriculum changes → merged to main → deleted
+├── u/sinah/progress     # ongoing learning progress — NOT auto-merged to main
+└── u/sinah/module-N     # per-module work, branched from progress → merged to progress on demand
 ```
 
 **`main`** — stable, finalized state. Curriculum structure, finalized topic notes,
@@ -54,13 +54,18 @@ infrastructure files. Only updated via explicit merges.
 **`u/sinah/progress`** — Sina's ongoing progress. `PROGRESS.md` lives here.
 Not merged to main automatically — only on demand.
 
-**`u/sinah/progress/module-N`** — active work branch for a specific module.
-Branched from `u/sinah/progress` at the start of a module.
-Merged back to `u/sinah/progress` on demand.
+**`u/sinah/module-N`** — active work branch for a specific module.
+Branched from `u/sinah/progress` at the start of each module.
+Merged back to `u/sinah/progress` on demand via "Update my progress".
 
-**`u/sinah/(topic)`** — short-lived branches for program changes (e.g.,
-`u/sinah/workflow-setup`, `u/sinah/add-module-7`). Merged to `main` when
-finalized, then deleted.
+> **Note:** Git does not allow a branch and a branch that is a path-prefix of it
+> to coexist (e.g., `u/sinah/progress` and `u/sinah/progress/module-1` cannot
+> both exist). Module branches therefore live at `u/sinah/module-N`, not nested
+> under `progress/`.
+
+**`u/sinah/(topic)`** — short-lived branches for program or curriculum changes
+(e.g., `u/sinah/workflow-setup`, `u/sinah/add-module-7`). Merged to `main`
+when finalized, then deleted.
 
 ### Commit message conventions
 
@@ -76,9 +81,13 @@ finalized, then deleted.
 
 | From | To | When |
 |------|----|------|
-| `u/sinah/progress/module-N` | `u/sinah/progress` | On demand: "Update my progress" |
+| `u/sinah/module-N` | `u/sinah/progress` | On demand: "Update my progress" |
 | `u/sinah/progress` | `main` | On demand: user requests it |
-| `u/sinah/(topic)` | `main` | When finalized — then delete the branch |
+| `u/sinah/(topic)` | `main` | When finalized — then delete branch |
+
+### Auto-save (every prompt)
+After completing each prompt response, Claude commits and pushes all pending changes
+to the current branch. This ensures no work is lost between prompts.
 
 ### "Update my progress" flow
 
@@ -89,10 +98,11 @@ Say **"Update my progress"** at any point during a module session. Claude will:
 3. Merge `u/sinah/progress` into the module branch (catch up with any progress-level changes)
 4. Push the module branch one final time
 5. Switch to `u/sinah/progress`, merge the module branch in, push
+6. Switch back to `u/sinah/module-N`
 
 ```mermaid
 sequenceDiagram
-    participant MB as u/sinah/progress/module-N
+    participant MB as u/sinah/module-N
     participant PB as u/sinah/progress
     participant R  as origin
 
@@ -104,6 +114,7 @@ sequenceDiagram
     MB->>R: push module branch (final)
     MB->>PB: merge module into progress
     PB->>R: push progress branch
+    Note over MB: return to module branch
 ```
 
 ### What lives in git / what doesn't
@@ -139,7 +150,7 @@ git push
 ```bash
 # On the other device
 git fetch --all
-git checkout u/sinah/progress/module-N
+git checkout u/sinah/module-N    # whichever is active — check PROGRESS.md
 git pull
 ```
 
