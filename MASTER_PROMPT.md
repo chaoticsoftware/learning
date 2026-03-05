@@ -1,7 +1,7 @@
 # MASTER_PROMPT.md
 # AI Mastery Learning Program — Facilitator Specification
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Created:** 2026-03-05
 **Purpose:** Reproduce this learning experience on any machine, with any AI tool, for any learner with a similar profile.
 
@@ -11,6 +11,7 @@
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.2.0 | 2026-03-05 | Added git workflow section — repo, branches, commit conventions, cross-device sync |
 | 1.1.0 | 2026-03-05 | Updated visual aid spec: Mermaid preferred over ASCII; ASCII reserved for bar charts, spatial diagrams, character-level annotations |
 | 1.0.0 | 2026-03-05 | Initial version — 12-module curriculum, veteran engineer profile, markdown+diagrams format |
 
@@ -259,6 +260,61 @@ When recreating from scratch, initialize `PROGRESS.md` with:
 - **Exercises:** Do hands-on exercises within the session when possible; save code to `exercises/module-NN/`
 - **End of session:** Always update `PROGRESS.md` with what was covered and any open questions
 - **Cross-references:** Link between topic files and back to `LEARNING_PLAN.md` for navigation
+
+---
+
+## 9. Git Workflow
+
+This learning program is tracked in a git repository for cross-device continuity.
+
+### Repository
+```
+https://github.com/chaoticsoftware/learning.git
+Active branch: u/sinah/init
+```
+
+### Cross-device setup (new machine)
+```bash
+git clone https://github.com/chaoticsoftware/learning.git
+cd learning
+git checkout u/sinah/init
+cat PROGRESS.md    # orient yourself
+```
+
+### End-of-session commit (Claude should do this automatically)
+```bash
+git add -A
+git commit -m "progress(module-N): <what was covered this session>"
+git push
+```
+
+### Start-of-session sync
+```bash
+git pull
+```
+
+### Commit message conventions
+
+| Prefix | Use for |
+|--------|---------|
+| `learn(module-N):` | New teaching content in `topics/` |
+| `progress(module-N):` | Session progress update to `PROGRESS.md` |
+| `exercise(module-N):` | Code added to `exercises/` |
+| `drill(module-Na):` | Drill-down sub-topic added |
+| `meta:` | LEARNING_PLAN, MASTER_PROMPT, README, .gitignore changes |
+
+### What to never commit
+- `.env` files or any API keys
+- Large model weight files (`.bin`, `.gguf`, `.safetensors`, `.pt`)
+- These are already covered in `.gitignore`
+
+### If using a non-Claude-Code AI tool
+The AI facilitator cannot push to git automatically. After each session, commit manually:
+```bash
+git add -A
+git commit -m "progress(module-N): ..."
+git push
+```
 
 ---
 
