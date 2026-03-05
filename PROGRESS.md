@@ -2,7 +2,7 @@
 
 ## Overall Status
 - Started: 2026-03-05
-- Current Module: Not started — ready to begin
+- Current Module: Module 1 — LLM Foundations (in progress, material presented, assessment pending)
 - Last Session: 2026-03-05
 
 ---
@@ -24,7 +24,7 @@
 | 11 | Production AI Systems | [ ] Not started | — | — | — |
 | 12 | Frontier Topics | [ ] Not started | — | — | — |
 
-Status legend: [ ] Not started | [~] In progress | [x] Complete
+Status legend: [ ] Not started | [~] In progress | [A] Assessment pending | [x] Complete | [!] Remediation in progress
 
 ---
 
@@ -36,10 +36,12 @@ Status legend: [ ] Not started | [~] In progress | [x] Complete
 - Familiar with: basic prompt submission, copilot autocomplete
 - Heard of but not explored: Agents, MCP, WorkIQ
 - Goal confirmed: comprehensive AI practitioner/architect expertise
-- Started Module 1: LLM Foundations
-- Teaching material saved to topics/01-llm-foundations.md (with diagrams)
-- MASTER_PROMPT.md created for reproducing the experience elsewhere
-- Format decisions: ASCII diagrams + Mermaid, all teaching saved to disk
+- Started Module 1: LLM Foundations — all material presented
+- Teaching material: topics/01-llm-foundations.md (Mermaid diagrams throughout)
+- MASTER_PROMPT.md v1.4.0: assessment system, adaptive curriculum, auto-save, silent git
+- Branch structure established: main / u/sinah/progress / u/sinah/module-N
+- Assessment record created: assessments/module-01-assessment.md
+- Module 1 pop quizzes and final assessment pending
 
 ---
 

@@ -8,6 +8,26 @@
 - Progress is tracked in PROGRESS.md
 - Each completed module gets a notes file under topics/
 
+## Assessment System
+Every module has two assessment layers before it can be marked complete:
+
+1. **Pop quizzes** — 2-3 questions after each major concept section, woven naturally
+   into the session. Ratings: solid / partial / gap. Gaps get inline clarification.
+
+2. **Final assessment** — 8-12 questions after all material is presented.
+   Completion threshold: ≤1 gap AND ≤2 partial.
+   Gaps trigger remediation; remediated topics are re-assessed.
+
+Assessment records: `assessments/module-NN-assessment.md`
+
+## Adaptive Curriculum
+Modules and sub-modules are added based on assessment results:
+- A knowledge gap not covered by existing material → new drill-down (`topics/NNa-*.md`)
+- A pattern of related gaps → new sub-module inserted into this plan
+- A gap that's prerequisite to a future module → flagged as a prereq check
+
+New additions appear below their parent module in this file.
+
 ---
 
 ## Curriculum Overview
