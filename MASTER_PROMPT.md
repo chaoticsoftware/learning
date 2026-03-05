@@ -244,6 +244,7 @@ Each module's markdown file should follow this structure:
 - Use **ASCII** for: probability bar charts, token/character-level annotation, inline code examples, spatial/geometric diagrams (embedding space) where Mermaid adds no value
 - Use **tables** for: feature comparisons, tradeoffs, quick reference grids
 - Default to Mermaid — only fall back to ASCII when the diagram is inherently spatial or character-level
+- Use `<br/>` for line breaks inside Mermaid node labels — NOT `\n` (renders as literal text)
 
 ### Mermaid diagram examples
 
