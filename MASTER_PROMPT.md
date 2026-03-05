@@ -1,7 +1,7 @@
 # MASTER_PROMPT.md
 # AI Mastery Learning Program — Facilitator Specification
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Created:** 2026-03-05
 **Purpose:** Reproduce this learning experience on any machine, with any AI tool, for any learner with a similar profile.
 
@@ -11,6 +11,7 @@
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.3.0 | 2026-03-05 | Overhauled git workflow: branch hierarchy, session start protocol, "Update my progress" flow, topic branch lifecycle |
 | 1.2.0 | 2026-03-05 | Added git workflow section — repo, branches, commit conventions, cross-device sync |
 | 1.1.0 | 2026-03-05 | Updated visual aid spec: Mermaid preferred over ASCII; ASCII reserved for bar charts, spatial diagrams, character-level annotations |
 | 1.0.0 | 2026-03-05 | Initial version — 12-module curriculum, veteran engineer profile, markdown+diagrams format |
@@ -73,11 +74,33 @@ FACILITATION RULES:
 - Use ASCII diagrams and Mermaid charts for visual aids
 - The learner is an engineer — use technical analogies, not simplified metaphors
 
-SESSION RESUME PROTOCOL:
+SESSION START PROTOCOL:
 At the start of each session:
-1. Read PROGRESS.md to find current module and status
-2. Read the relevant topic file if it exists
-3. Continue from where we left off
+1. Run: git branch --show-current
+2. Run: git pull
+3. Read PROGRESS.md
+4. If on u/sinah/progress/module-N → state the module, last session summary, and ask what to work on
+5. If on u/sinah/progress or main → read PROGRESS.md, ask what module to work on,
+   then: git checkout u/sinah/progress/module-N (create if it doesn't exist, branching from u/sinah/progress)
+
+SESSION END PROTOCOL:
+At the end of each session:
+1. Update PROGRESS.md with what was covered
+2. git add -A
+3. git commit -m "progress(module-N): <summary>"
+4. git push
+
+"UPDATE MY PROGRESS" PROTOCOL:
+When the user says "Update my progress" (must be on a module branch):
+1. git add -A && git commit -m "progress(module-N): checkpoint before sync" (if dirty)
+2. git push
+3. git pull (resolve conflicts if any, push resolution)
+4. git merge u/sinah/progress (bring progress branch changes into module branch)
+5. Resolve any conflicts, then: git push
+6. git checkout u/sinah/progress
+7. git merge u/sinah/progress/module-N
+8. git push
+9. git checkout u/sinah/progress/module-N (return to module branch)
 
 CURRENT STATUS:
 [paste current content of PROGRESS.md here]
@@ -265,31 +288,24 @@ When recreating from scratch, initialize `PROGRESS.md` with:
 
 ## 9. Git Workflow
 
-This learning program is tracked in a git repository for cross-device continuity.
-
 ### Repository
 ```
 https://github.com/chaoticsoftware/learning.git
-Active branch: u/sinah/init
+```
+
+### Branch hierarchy
+```
+main
+├── u/sinah/(topic)                  # program/curriculum changes → merge to main → delete
+└── u/sinah/progress                 # ongoing progress — NOT auto-merged to main
+    └── u/sinah/progress/module-N    # per-module work → merge to progress on demand
 ```
 
 ### Cross-device setup (new machine)
 ```bash
 git clone https://github.com/chaoticsoftware/learning.git
 cd learning
-git checkout u/sinah/init
-cat PROGRESS.md    # orient yourself
-```
-
-### End-of-session commit (Claude should do this automatically)
-```bash
-git add -A
-git commit -m "progress(module-N): <what was covered this session>"
-git push
-```
-
-### Start-of-session sync
-```bash
+git checkout u/sinah/progress/module-N   # whichever is active — check PROGRESS.md
 git pull
 ```
 
@@ -298,18 +314,25 @@ git pull
 | Prefix | Use for |
 |--------|---------|
 | `learn(module-N):` | New teaching content in `topics/` |
-| `progress(module-N):` | Session progress update to `PROGRESS.md` |
+| `progress(module-N):` | Session update to `PROGRESS.md` |
 | `exercise(module-N):` | Code added to `exercises/` |
 | `drill(module-Na):` | Drill-down sub-topic added |
-| `meta:` | LEARNING_PLAN, MASTER_PROMPT, README, .gitignore changes |
+| `meta:` | LEARNING_PLAN, MASTER_PROMPT, README, .gitignore |
+
+### Merge rules
+| From | To | Trigger |
+|------|----|---------|
+| `u/sinah/progress/module-N` | `u/sinah/progress` | User: "Update my progress" |
+| `u/sinah/progress` | `main` | User requests explicit merge |
+| `u/sinah/(topic)` | `main` | When finalized — then delete branch |
 
 ### What to never commit
-- `.env` files or any API keys
-- Large model weight files (`.bin`, `.gguf`, `.safetensors`, `.pt`)
-- These are already covered in `.gitignore`
+- `.env` files, API keys
+- Model weight files (`.bin`, `.gguf`, `.safetensors`, `.pt`)
+- Covered by `.gitignore`
 
 ### If using a non-Claude-Code AI tool
-The AI facilitator cannot push to git automatically. After each session, commit manually:
+Claude Code handles git automatically. With other tools, run manually at session end:
 ```bash
 git add -A
 git commit -m "progress(module-N): ..."
