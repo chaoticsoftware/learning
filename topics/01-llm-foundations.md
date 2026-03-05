@@ -157,7 +157,7 @@ Repeated spaces     each may be a token    Avoid unnecessary whitespace
 | Input | Issue | Impact |
 |-------|-------|--------|
 | `12345 + 67890` | Numbers split unpredictably | LLMs are bad at arithmetic — use a tool |
-| `UPPERCASE` | Often fewer tokens than lowercase | Affects token boundaries, minor cost difference |
+| `UPPERCASE` | Unreliable — common acronyms (`API`, `URL`, `HTTP`) are single tokens, but arbitrary all-caps words can tokenize *worse* than lowercase since uppercase variants are rarer in training data | Not a useful optimization; don't reason about case for token efficiency |
 | `" hello"` vs `"hello"` | Leading space = different token | Affects completion at sentence starts |
 | Rare proper nouns | Spelled out character-by-character | More expensive and less reliable |
 | Repeated whitespace | Each space can be a token | Wastes token budget |

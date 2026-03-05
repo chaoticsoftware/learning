@@ -9,6 +9,17 @@
 
 ## Pop Quiz Log
 
+### Ad-hoc — Tokenization (Section 3)
+**Date:** 2026-03-05
+
+| # | Question | Answer given | Rating | Notes |
+|---|----------|-------------|--------|-------|
+| 1 | "Why would uppercase use fewer tokens? Should I uppercase prompts?" | Correctly challenged the claim; deduced the answer by reasoning from first principles ("LIKE IS THIS HOW I SHOULD HAVE ASKED?") | solid | Identified an error in the course material. Claim was oversimplified — corrected in topics/01-llm-foundations.md. Practical answer: all-caps carries tone baggage from training data and token differences are negligible. |
+
+**Course material corrected:** UPPERCASE tokenization claim updated in Section 3 edge cases table.
+
+---
+
 ### Quiz 1 — After Section 1–2: What is an LLM / Transformers & Attention
 
 *(pending — to be conducted during session)*
