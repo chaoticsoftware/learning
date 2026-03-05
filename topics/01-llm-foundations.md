@@ -36,7 +36,7 @@ graph TD
     A --> B[LLM forward pass]
     B --> C[Probability distribution over entire vocabulary]
     C --> D{Sample token}
-    D --> E["' Paris'  94.3%\n' Lyon'    2.1%\n' Rome'    1.4%\n..."]
+    D --> E["' Paris'  94.3%<br/>' Lyon'    2.1%<br/>' Rome'    1.4%<br/>..."]
     E --> F[Append to sequence]
     F --> G{Stop token or max length?}
     G -->|No| B
@@ -81,10 +81,10 @@ Instead of one attention operation, transformers run several in parallel. Each "
 
 ```mermaid
 graph TD
-    I[Input Tokens] --> H1["Head 1\n(subject–verb agreement)"]
-    I --> H2["Head 2\n(coreference)"]
-    I --> H3["Head 3\n(positional relations)"]
-    I --> HN["Head N\n(syntax / other)"]
+    I[Input Tokens] --> H1["Head 1<br/>(subject–verb agreement)"]
+    I --> H2["Head 2<br/>(coreference)"]
+    I --> H3["Head 3<br/>(positional relations)"]
+    I --> HN["Head N<br/>(syntax / other)"]
     H1 --> C[Concatenate all heads]
     H2 --> C
     H3 --> C
@@ -96,12 +96,12 @@ graph TD
 
 ```mermaid
 graph TD
-    A[Token representations\nvectors from previous layer]
-    A --> B["Multi-Head Attention\neach token attends to all others"]
-    B --> C["Add & Normalize\n(residual connection — stabilizes deep networks)"]
-    C --> D["Feed-Forward Network\n(per-token nonlinear transformation)"]
+    A[Token representations<br/>vectors from previous layer]
+    A --> B["Multi-Head Attention<br/>each token attends to all others"]
+    B --> C["Add & Normalize<br/>(residual connection — stabilizes deep networks)"]
+    C --> D["Feed-Forward Network<br/>(per-token nonlinear transformation)"]
     D --> E[Add & Normalize]
-    E --> F[Refined token representations\nfed to next layer]
+    E --> F[Refined token representations<br/>fed to next layer]
 ```
 
 Modern LLMs stack **32–96+ of these blocks**. Early layers learn syntax; middle layers semantics; deep layers abstract reasoning patterns.
@@ -166,12 +166,12 @@ Repeated spaces     each may be a token    Avoid unnecessary whitespace
 
 ```mermaid
 graph LR
-    CW["Claude context window\n200,000 tokens\n≈ 150,000 words\n≈ 500 pages"]
+    CW["Claude context window<br/>200,000 tokens<br/>≈ 150,000 words<br/>≈ 500 pages"]
     CW --> SP[System prompt]
     CW --> CH[Conversation history]
     CW --> DOC[Injected documents]
     CW --> OUT[Model output]
-    SP & CH & DOC & OUT --> TOTAL["All of the above must fit\nwithin the 200K limit"]
+    SP & CH & DOC & OUT --> TOTAL["All of the above must fit<br/>within the 200K limit"]
 ```
 
 ---
@@ -204,7 +204,7 @@ This is not metaphor — semantic relationships are literally encoded as directi
 graph TD
     Q["Query: 'How do I reverse a linked list?'"]
     Q --> EMB[Embedding model]
-    EMB --> QV["Query vector\n[0.23, -0.87, 0.44, ...]"]
+    EMB --> QV["Query vector<br/>[0.23, -0.87, 0.44, ...]"]
     QV --> SIM["Cosine similarity vs. stored document vectors"]
     SIM --> R1["0.94 — 'Reversing a linked list in Python...'"]
     SIM --> R2["0.91 — 'Linked list data structure tutorial...'"]
@@ -232,22 +232,22 @@ For RAG and search, you call a dedicated **embedding model** (e.g., `text-embedd
 ```mermaid
 graph TD
     subgraph S1["Stage 1 — Pre-training  (95%+ of compute)"]
-        PT_IN["Trillions of tokens\n(web, books, code, Wikipedia)"]
-        PT_TASK["Task: predict next token\nbillions of iterations"]
-        PT_OUT["Base model\nknows language, facts, code\nno safety / personality / UX"]
+        PT_IN["Trillions of tokens<br/>(web, books, code, Wikipedia)"]
+        PT_TASK["Task: predict next token<br/>billions of iterations"]
+        PT_OUT["Base model<br/>knows language, facts, code<br/>no safety / personality / UX"]
         PT_IN --> PT_TASK --> PT_OUT
     end
 
     subgraph S2["Stage 2 — Supervised Fine-Tuning (SFT)"]
         SFT_IN["Human-written (instruction → ideal response) pairs"]
-        SFT_TASK["Train to follow instructions\nand adopt assistant role"]
+        SFT_TASK["Train to follow instructions<br/>and adopt assistant role"]
         SFT_OUT["Instruction-following model"]
         SFT_IN --> SFT_TASK --> SFT_OUT
     end
 
     subgraph S3["Stage 3 — RLHF / Constitutional AI"]
-        AL_IN["Human preference data\nor constitutional principles"]
-        AL_TASK["Optimize for safety,\nhelpfulness, honesty"]
+        AL_IN["Human preference data<br/>or constitutional principles"]
+        AL_TASK["Optimize for safety,<br/>helpfulness, honesty"]
         AL_OUT["The model you interact with"]
         AL_IN --> AL_TASK --> AL_OUT
     end
@@ -265,8 +265,8 @@ graph TD
     RA --> HR[Human rater compares]
     RB --> HR
     HR --> PREF["Preference: 'A is better'"]
-    PREF --> RM["Train Reward Model\nRM: prompt + response → scalar score"]
-    RM --> RL["Fine-tune LLM with RL\n(PPO) to maximize RM score"]
+    PREF --> RM["Train Reward Model<br/>RM: prompt + response → scalar score"]
+    RM --> RL["Fine-tune LLM with RL<br/>(PPO) to maximize RM score"]
     RL --> ALIGNED[Better-aligned model]
 ```
 
@@ -277,9 +277,9 @@ Instead of relying entirely on human raters, Claude is trained against a set of 
 ```mermaid
 graph TD
     GEN[Model generates response to prompt]
-    GEN --> CRIT["Model critiques its own response\nagainst the constitution\n'Is this honest? Does it respect autonomy?'"]
+    GEN --> CRIT["Model critiques its own response<br/>against the constitution<br/>'Is this honest? Does it respect autonomy?'"]
     CRIT --> REV[Model revises the response]
-    REV --> DATA["(original, critique, revised) triplets\nbecome training data"]
+    REV --> DATA["(original, critique, revised) triplets<br/>become training data"]
     DATA --> RM[Train Reward Model on these preferences]
     RM --> FT[Fine-tune LLM]
     FT --> BETTER[Better-aligned model]
@@ -347,17 +347,17 @@ quadrantChart
 graph TD
     LLM[LLM — next-token predictor]
 
-    LLM --> H["HALLUCINATION\nAlways produces a plausible token,\neven when it doesn't know.\nNot lying — it has no 'I don't know' state."]
-    LLM --> NS["NO PERSISTENT STATE\nEach call is stateless.\nZero memory of prior sessions\nunless you include them in the prompt."]
-    LLM --> KC["KNOWLEDGE CUTOFF\nTraining data has a date.\nNothing after it is known."]
-    LLM --> ML["BRITTLE MATH & LOGIC\nArithmetic is pattern-matched,\nnot calculated. Unreliable."]
-    LLM --> PS["PROMPT SENSITIVITY\nDifferent phrasing of the same question\ncan yield different answers."]
+    LLM --> H["HALLUCINATION<br/>Always produces a plausible token,<br/>even when it doesn't know.<br/>Not lying — it has no 'I don't know' state."]
+    LLM --> NS["NO PERSISTENT STATE<br/>Each call is stateless.<br/>Zero memory of prior sessions<br/>unless you include them in the prompt."]
+    LLM --> KC["KNOWLEDGE CUTOFF<br/>Training data has a date.<br/>Nothing after it is known."]
+    LLM --> ML["BRITTLE MATH & LOGIC<br/>Arithmetic is pattern-matched,<br/>not calculated. Unreliable."]
+    LLM --> PS["PROMPT SENSITIVITY<br/>Different phrasing of the same question<br/>can yield different answers."]
 
-    H --> FH["Fix: RAG + tool use\n(Module 4, 7)"]
-    NS --> FNS["Fix: manage conversation\nhistory in your code"]
-    KC --> FKC["Fix: RAG / search tools\nfor current info"]
-    ML --> FML["Fix: give it a code\ninterpreter or calculator tool"]
-    PS --> FPS["Fix: systematic prompt\nengineering (Module 2)"]
+    H --> FH["Fix: RAG + tool use<br/>(Module 4, 7)"]
+    NS --> FNS["Fix: manage conversation<br/>history in your code"]
+    KC --> FKC["Fix: RAG / search tools<br/>for current info"]
+    ML --> FML["Fix: give it a code<br/>interpreter or calculator tool"]
+    PS --> FPS["Fix: systematic prompt<br/>engineering (Module 2)"]
 ```
 
 ### Hallucination — the deeper picture
@@ -387,13 +387,13 @@ Modern frontier models handle multiple input types. Each modality gets its own e
 
 ```mermaid
 graph LR
-    TI["Text input\n'Describe this image'"] --> TOK[Tokenizer]
-    II["Image input\n(JPEG bytes)"] --> VE["Vision Encoder\n(e.g. CLIP)\nbreaks image into patches"]
+    TI["Text input<br/>'Describe this image'"] --> TOK[Tokenizer]
+    II["Image input<br/>(JPEG bytes)"] --> VE["Vision Encoder<br/>(e.g. CLIP)<br/>breaks image into patches"]
 
-    TOK --> SEQ["Combined token sequence\n[img_patch_1 ... img_patch_196, token_1, token_2, ...]"]
+    TOK --> SEQ["Combined token sequence<br/>[img_patch_1 ... img_patch_196, token_1, token_2, ...]"]
     VE --> SEQ
 
-    SEQ --> TR["Transformer\nattends across both text and image patches\nin the same vector space"]
+    SEQ --> TR["Transformer<br/>attends across both text and image patches<br/>in the same vector space"]
     TR --> OUT[Text output]
 ```
 
@@ -417,11 +417,11 @@ The key insight: image patches and text tokens are **interleaved in the same seq
 
 ```mermaid
 graph TD
-    CORE["Next-token prediction at scale\n— the only thing it actually does"]
+    CORE["Next-token prediction at scale<br/>— the only thing it actually does"]
 
-    CORE --> EM["Emergent behaviors\n(reasoning, knowledge, code gen)"]
-    CORE --> ENA["Enabled by\nTransformer + attention\nEmbeddings (meaning as geometry)\nScale (parameters × data × compute)\nRLHF / Constitutional AI"]
-    CORE --> LIM["Hard limitations\nHallucination → fix architecturally\nNo state → you manage memory\nBad at math → use tools\nKnowledge cutoff → use RAG"]
+    CORE --> EM["Emergent behaviors<br/>(reasoning, knowledge, code gen)"]
+    CORE --> ENA["Enabled by<br/>Transformer + attention<br/>Embeddings (meaning as geometry)<br/>Scale (parameters × data × compute)<br/>RLHF / Constitutional AI"]
+    CORE --> LIM["Hard limitations<br/>Hallucination → fix architecturally<br/>No state → you manage memory<br/>Bad at math → use tools<br/>Knowledge cutoff → use RAG"]
 ```
 
 ### The single most important practitioner insight
